@@ -1,0 +1,9 @@
+CHIP IsMinus16 {
+    IN a[16];
+    OUT out;
+
+    PARTS:
+    // Negative if most significant bit is 1
+    And(a=a[15], b=true, out=out);
+}
+

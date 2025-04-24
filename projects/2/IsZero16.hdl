@@ -1,0 +1,23 @@
+CHIP IsZero16 {
+    IN a[16];
+    OUT out;
+
+    PARTS:
+    // If any bit is 1, any1=1; then out = NOT any1
+    Or(a=a[0], b=a[1], out=a1);
+    Or(a=a[2], b=a[3], out=a2);
+    Or(a=a[4], b=a[5], out=a3);
+    Or(a=a[6], b=a[7], out=a4);
+    Or(a=a[8], b=a[9], out=a5);
+    Or(a=a[10], b=a[11], out=a6);
+    Or(a=a[12], b=a[13], out=a7);
+    Or(a=a[14], b=a[15], out=a8);
+    Or(a=a1, b=a2, out=aa1);
+    Or(a=a3, b=a4, out=aa2);
+    Or(a=a5, b=a6, out=aa3);
+    Or(a=a7, b=a8, out=aa4);
+    Or(a=aa1, b=aa2, out=aaa1);
+    Or(a=aa3, b=aa4, out=aaa2);
+    Or(a=aaa1, b=aaa2, out=result);
+    Not(in=result, out=out);
+}

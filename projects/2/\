@@ -36,7 +36,7 @@ CHIP ALU {
         f,  // compute (out = x + y) or (out = x & y)?
         no; // negate the out output?
     OUT 
-        out[16],  // 16-bit output;
+        out[16], // 16-bit output
         zr,      // if (out == 0) equals 1, else 0
         ng;      // if (out < 0)  equals 1, else 0
 
@@ -54,11 +54,25 @@ CHIP ALU {
         Mux16(a=andxy, b=addxy, sel=f, out=preOut);
 
         Not16(in=preOut, out=notPreOut);
-        Mux16(a=preOut, b=notPreOut, sel=no, out=result);
+        Mux16(a=preOut, b=notPreOut, sel=no, out=out);
 
-	IsZero16(a=result, out=zr);
+	Or(a=out[0], b=out[1], out=zr1);
+	Or(a=out[2], b=out[3], out=zr2);
+	Or(a=out[4], b=out[5], out=zr3);
+	Or(a=out[6], b=out[7], out=zr4);
+	Or(a=out[8], b=out[9], out=zr5);
+	Or(a=out[10], b=out[11], out=zr6);
+	Or(a=out[12], b=out[13], out=zr7);
+	Or(a=out[14], b=out[15], out=zr8);
+	Or(a=zr1, b=zr2, out=zzr1);
+	Or(a=zr3, b=zr4, out=zzr2);
+	Or(a=zr5, b=zr6, out=zzr3);
+	Or(a=zr7, b=zr8, out=zzr4);
+	Or(a=zzr1, b=zzr2, out=zzzr1);
+	Or(a=zzr3, b=zzr4, out=zzzr2);
+	Or(a=zzzr1, b=zzzr2, out=zrresult);
+	Mux16(a=true, b=false, sel=zrresult, out=zr);
 
-	IsMinus16(a=result, out=ng);
-
-	Mux16(a=result, b=result, sel=false, out=out);
+        And(a=out[15], b=true, out=ngresult);
+	Mux16(a=true, b=false, sel=ngresult, out=ng);
  }
